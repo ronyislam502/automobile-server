@@ -6,13 +6,13 @@ import { createToken, verifyToken } from "./auth.utilities";
 import config from "../../config";
 
 const loginUser = async (payload: TLoginUser) => {
-  const user = await User.isUserExistsByEmail(payload.email);
+  const user = await User.isUserExistsByEmail(payload?.email);
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "This user is not found !");
   }
 
-  const isDeleted = user.isDeleted;
+  const isDeleted = user?.isDeleted;
   if (isDeleted) {
     throw new AppError(httpStatus.FORBIDDEN, "This user is deleted !");
   }
@@ -21,8 +21,8 @@ const loginUser = async (payload: TLoginUser) => {
     throw new AppError(httpStatus.FORBIDDEN, "Password do not matched");
   }
   const jwtPayload = {
-    email: user.email,
-    role: user.role,
+    email: user?.email,
+    role: user?.role,
   };
 
   const accessToken = createToken(
